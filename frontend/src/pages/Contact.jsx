@@ -339,7 +339,7 @@ md:h-[400px]
           </p>
 
           <p className="text-[#F5F1EA] text-base sm:text-lg leading-relaxed">
-            1st Floor, Rama heights, Tarakarama Nagar, Srinivasa Nagar Colony, Guntur, 
+            Rama heights, Flat 101, JKC College Road, Next to Orion, Guntur, 
             Andhra Pradesh, 522006
           </p>
         </div>
@@ -793,9 +793,9 @@ justify-between
         </p>
 
         <p className="text-[#F5F1EA] text-base sm:text-lg leading-[1.9]">
-          1st Floor, Rama heights, Tarakarama Nagar, 
+          Rama heights, Flat 101,   
           <br />
-          Srinivasa Nagar Colony, 
+          JKC College Road, Next to Orion,
           <br />
           Guntur, Andhra Pradesh, 522006
         </p>
