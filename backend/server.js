@@ -12,7 +12,16 @@ console.log("EMAIL_PASS:", process.env.EMAIL_PASS ? "Loaded ✅" : "Not Loaded �
 console.log("OWNER_EMAIL:", process.env.OWNER_EMAIL);
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "https://manueninfotech.github.io",
+      "http://localhost:5173",
+    ],
+    methods: ["GET", "POST"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 mongoose
@@ -22,6 +31,8 @@ mongoose
 
 app.use("/api", contactRoutes);
 
-app.listen(5000, () => {
-  console.log("🚀 Server running on port 5000");
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });
