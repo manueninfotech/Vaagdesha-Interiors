@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://monikaamujuri-manuen.github.io/Vagdeesha-Interiors/sitemap.xml
