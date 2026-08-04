@@ -142,7 +142,7 @@ if (!emailRegex.test(formData.email)) {
       form.append("file", formData.file);
     }
 
-    const res = await fetch("http://localhost:5000/api/contact", {
+    const res = await fetch("https://vaagdesha-interiors.onrender.com/api/contact", {
       method: "POST",
       body: form,
     });
