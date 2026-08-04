@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
 import cors from "cors";
 
 import contactRoutes from "./routes/contactRoutes.js";
@@ -12,6 +12,7 @@ console.log("EMAIL_PASS:", process.env.EMAIL_PASS ? "Loaded ✅" : "Not Loaded �
 console.log("OWNER_EMAIL:", process.env.OWNER_EMAIL);
 
 const app = express();
+
 app.use(
   cors({
     origin: [
@@ -22,16 +23,18 @@ app.use(
     credentials: true,
   })
 );
+
 app.use(express.json());
 
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ MongoDB Connected"))
-  .catch((err) => console.log(err));
+// mongoose
+//   .connect(process.env.MONGO_URI)
+//   .then(() => console.log("✅ MongoDB Connected"))
+//   .catch((err) => console.log(err));
 
 app.use("/api", contactRoutes);
 
+const PORT = process.env.PORT || 5000;
 
-app.listen(5000, () => {
-  console.log(`🚀 Server running on port 5000`);
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });
