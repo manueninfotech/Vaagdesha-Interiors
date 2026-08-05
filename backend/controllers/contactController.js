@@ -52,7 +52,7 @@ export const createContact = async (req, res) => {
 }
 
     const mailOptions = {
-      from: process.env.SENDER_EMAIL,
+      from: process.env.EMAIL_USER,
       to: process.env.OWNER_EMAIL,
       subject: "New Inquiry - Vaagdeesha Interiors",
 
@@ -217,7 +217,7 @@ export const createContact = async (req, res) => {
     console.log("Owner mail sent:", ownerMail.messageId);
 
     const customerMail = await transporter.sendMail({
-      from: process.env.SENDER_EMAIL,
+      from: process.env.EMAIL_USER,
       to: email,
 
       subject: "We've received your inquiry | Vaagdeesha Interiors",
