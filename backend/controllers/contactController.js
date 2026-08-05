@@ -211,6 +211,8 @@ export const createContact = async (req, res) => {
         : [],
     };
 
+    console.log("Before sendMail");
+
     const ownerMail = await transporter.sendMail(mailOptions);
     console.log("Owner mail sent:", ownerMail.messageId);
 
@@ -258,6 +260,7 @@ export const createContact = async (req, res) => {
         </div>
       `,
     });
+    console.log("After second mail");
 
     return res.status(200).json({
       success: true,
