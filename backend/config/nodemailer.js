@@ -1,14 +1,17 @@
 import nodemailer from "nodemailer";
+import dns from "node:dns";
 import dotenv from "dotenv";
 
 dotenv.config();
+
+// Force Node to prefer IPv4 addresses
+dns.setDefaultResultOrder("ipv4first");
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 587,
   secure: false,
   requireTLS: true,
-  family: 4,              // <-- add this
   connectionTimeout: 30000,
   greetingTimeout: 30000,
   socketTimeout: 30000,
@@ -18,11 +21,11 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-transporter.verify((error) => {
-  if (error) {
-    console.error("SMTP Verify Error:", error);
+transporter.verify((err) => {
+  if (err) {
+    console.error("SMTP Verify Error:", err);
   } else {
-    console.log("SMTP Server Ready");
+    console.log("SMTP Ready");
   }
 });
 
