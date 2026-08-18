@@ -339,8 +339,7 @@ md:h-[400px]
           </p>
 
           <p className="text-[#F5F1EA] text-base sm:text-lg leading-relaxed">
-            Rama heights, Flat 101, JKC College Road, Next to Orion, Guntur, 
-            Andhra Pradesh, 522006
+            Guntur, Andhra Pradesh
           </p>
         </div>
 
@@ -450,9 +449,9 @@ md:h-[400px]
           <div
             className="
               flex flex-col sm:flex-row
-items-start sm:items-center
-gap-4 sm:gap-0
-justify-between
+              items-start sm:items-center
+              gap-4 sm:gap-0
+              justify-between
 
               border border-white/[0.08]
 
@@ -793,11 +792,7 @@ justify-between
         </p>
 
         <p className="text-[#F5F1EA] text-base sm:text-lg leading-[1.9]">
-          Rama heights, Flat 101,   
-          <br />
-          JKC College Road, Next to Orion,
-          <br />
-          Guntur, Andhra Pradesh, 522006
+          Guntur, Andhra Pradesh.
         </p>
 
       </div>
