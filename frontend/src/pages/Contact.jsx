@@ -223,6 +223,7 @@ const labelStyle = `
   title="Contact Vaagdesha Interiors | Interior Design Consultation"
   description="Contact Vaagdesha Interiors for luxury residential and commercial interior design services. Schedule a consultation and bring your dream space to life with our expert designers."
   keywords="Contact Vaagdesha Interiors, Interior Design Consultation, Interior Designers, Luxury Interiors, Residential Interiors, Commercial Interiors, Home Interior Design"
+  url="https://vaagdeshainteriors.com/contact"
 />
           <Navbar />
     

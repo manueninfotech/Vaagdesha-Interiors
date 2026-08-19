@@ -221,6 +221,7 @@ const fadeScale = {
   title="Interior Design Services | Vaagdesha Interiors"
   description="Vaagdesha Interiors offers luxury residential and commercial interior design services, space planning, modular kitchens, custom furniture, false ceilings, lighting design, and complete interior solutions."
   keywords="Interior Design Services, Residential Interiors, Commercial Interiors, Modular Kitchen Design, False Ceiling Design, Custom Furniture, Luxury Interiors, Space Planning, Vaagdesha Interiors"
+  url="https://vaagdeshainteriors.com/services"
 />
     
 <section className="

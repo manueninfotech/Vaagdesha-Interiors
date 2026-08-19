@@ -78,6 +78,7 @@ const transformations = [
   title="Client Reviews | Vaagdesha Interiors"
   description="Read client reviews and testimonials about Vaagdesha Interiors. Discover how our luxury interior design solutions transformed homes and commercial spaces with exceptional craftsmanship and attention to detail."
   keywords="Interior Design Reviews, Client Testimonials, Customer Reviews, Luxury Interior Design Feedback, Home Interior Reviews, Commercial Interior Reviews, Vaagdesha Interiors"
+  url="https://vaagdeshainteriors.com/reviews"
 />
       <Navbar />
 

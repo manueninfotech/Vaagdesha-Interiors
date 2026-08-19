@@ -3,10 +3,12 @@ import { Helmet } from "react-helmet-async";
 export default function SEO({
   title,
   description,
-  keywords,
+  url,
+  noindex = false,
 }) {
   return (
     <Helmet>
+      {/* Basic SEO */}
       <title>{title}</title>
 
       <meta
@@ -14,9 +16,24 @@ export default function SEO({
         content={description}
       />
 
+      {/* Canonical URL */}
+      {url && (
+        <link
+          rel="canonical"
+          href={url}
+        />
+      )}
+
+      {/* Robots */}
       <meta
-        name="keywords"
-        content={keywords}
+        name="robots"
+        content={noindex ? "noindex, nofollow" : "index, follow"}
+      />
+
+      {/* Open Graph */}
+      <meta
+        property="og:type"
+        content="website"
       />
 
       <meta
@@ -27,6 +44,44 @@ export default function SEO({
       <meta
         property="og:description"
         content={description}
+      />
+
+      {url && (
+        <meta
+          property="og:url"
+          content={url}
+        />
+      )}
+
+      <meta
+        property="og:image"
+        content={image}
+      />
+
+      <meta
+        property="og:site_name"
+        content="Vaagdeesha Interiors"
+      />
+
+      {/* Twitter / X */}
+      <meta
+        name="twitter:card"
+        content="summary_large_image"
+      />
+
+      <meta
+        name="twitter:title"
+        content={title}
+      />
+
+      <meta
+        name="twitter:description"
+        content={description}
+      />
+
+      <meta
+        name="twitter:image"
+        content={image}
       />
     </Helmet>
   );

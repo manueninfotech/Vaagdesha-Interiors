@@ -329,6 +329,7 @@ const scrollRight = () => {
   title="Interior Design Portfolio | Vaagdesha Interiors"
   description="Explore the portfolio of Vaagdesha Interiors featuring luxury residential and commercial interior design projects, modern living spaces, elegant bedrooms, kitchens, and bespoke interiors."
   keywords="Interior Design Portfolio, Luxury Interior Projects, Residential Interiors, Commercial Interiors, Modern Living Room Design, Bedroom Interiors, Kitchen Interiors, Vaagdesha Interiors"
+  url="https://vaagdeshainteriors.com/portfolio"
 />
 
     <section className=" relative overflow-hidden bg-[#0F0F10]
