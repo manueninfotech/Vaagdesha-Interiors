@@ -326,9 +326,9 @@ const scrollRight = () => {
   return (
     <>
     <SEO
-  title="Interior Design Portfolio | Vaagdeesha Interiors"
-  description="Explore the portfolio of Vaagdeesha Interiors featuring luxury residential and commercial interior design projects, modern living spaces, elegant bedrooms, kitchens, and bespoke interiors."
-  keywords="Interior Design Portfolio, Luxury Interior Projects, Residential Interiors, Commercial Interiors, Modern Living Room Design, Bedroom Interiors, Kitchen Interiors, Vaagdeesha Interiors"
+  title="Interior Design Portfolio | Vaagdesha Interiors"
+  description="Explore the portfolio of Vaagdesha Interiors featuring luxury residential and commercial interior design projects, modern living spaces, elegant bedrooms, kitchens, and bespoke interiors."
+  keywords="Interior Design Portfolio, Luxury Interior Projects, Residential Interiors, Commercial Interiors, Modern Living Room Design, Bedroom Interiors, Kitchen Interiors, Vaagdesha Interiors"
 />
 
     <section className=" relative overflow-hidden bg-[#0F0F10]

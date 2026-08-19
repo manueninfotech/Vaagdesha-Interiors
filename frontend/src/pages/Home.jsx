@@ -248,9 +248,9 @@ useEffect(() => {
     
       <>
       <SEO
-  title="Vaagdeesha Interiors | Luxury Residential & Commercial Interior Design"
-  description="Vaagdeesha Interiors specializes in luxury residential and commercial interior design, creating elegant and timeless spaces with exceptional craftsmanship."
-  keywords="Vaagdeesha Interiors, Interior Designers, Luxury Interiors, Residential Interiors, Commercial Interiors"
+  title="Vaagdesha Interiors | Luxury Residential & Commercial Interior Design"
+  description="Vaagdesha Interiors specializes in luxury residential and commercial interior design, creating elegant and timeless spaces with exceptional craftsmanship."
+  keywords="Vaagdesha Interiors, Interior Designers, Luxury Interiors, Residential Interiors, Commercial Interiors"
 />
   
         <Navbar />
