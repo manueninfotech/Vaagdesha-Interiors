@@ -16,10 +16,10 @@ const app = express();
 app.use(
   cors({
     origin: [
-      "https://manueninfotech.github.io",
       "http://localhost:5173",
+      "https://manueninfotech.github.io",
+      "https://vaagdesha-interiors.vercel.app",
     ],
-    methods: ["GET", "POST"],
     credentials: true,
   })
 );
