@@ -81,7 +81,7 @@ export const createContact = async (req, res) => {
       font-size:28px;
       letter-spacing:3px;
       ">
-      VAAGDEESHA INTERIORS
+      VAAGDESHA INTERIORS
       </h1>
 
       <p style="
@@ -191,7 +191,7 @@ export const createContact = async (req, res) => {
       text-align:center;
       ">
       This inquiry was submitted from the
-      <strong>Vaagdeesha Interiors</strong> website.
+      <strong>Vaagdesha Interiors</strong> website.
       </p>
 
       </div>
@@ -217,10 +217,10 @@ export const createContact = async (req, res) => {
     console.log("Owner mail sent:", ownerMail.messageId);
 
     const customerMail = await transporter.sendMail({
-      from: `"Vaagdeesha Interiors" <${process.env.SENDER_EMAIL}>`,
+      from: `"Vaagdesha Interiors" <${process.env.SENDER_EMAIL}>`,
       to: email,
 
-      subject: "We've received your inquiry | Vaagdeesha Interiors",
+      subject: "We've received your inquiry | Vaagdesha Interiors",
 
       html: `
         <div style="font-family:Arial,sans-serif;max-width:650px;margin:auto;padding:30px;background:#111111;color:#F5F1EA;">
@@ -252,7 +252,7 @@ export const createContact = async (req, res) => {
           <hr style="border:none;border-top:1px solid #333;margin:30px 0;" />
 
           <p style="font-size:14px;color:#B0B0B0;">
-            Vaagdeesha Interiors
+            Vaagdesha Interiors
             <br>
             Designing timeless interiors with elegance and precision.
           </p>
