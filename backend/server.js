@@ -19,6 +19,8 @@ app.use(
       "http://localhost:5173",
       "https://manueninfotech.github.io",
       "https://vaagdesha-interiors.vercel.app",
+      "https://vaagdeshainteriors.com",
+      "https://www.vaagdeshainteriors.com",
     ],
     credentials: true,
   })
