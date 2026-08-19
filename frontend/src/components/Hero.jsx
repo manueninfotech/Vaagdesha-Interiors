@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import heroo from "../assets/heroo.mp4";
+import hero from "../assets/hero-optimized.mp4";
 import logo1 from "../assets/logo1.png";
 import PanoramaModal from "../components/PanoramaModal";
 import hero360 from "../assets/hero360.png";
@@ -49,7 +50,7 @@ export default function Hero() {
     playsInline
     className="absolute inset-0 w-full h-full object-cover"
   >
-    <source src={heroo} type="video/mp4" />
+    <source src={hero} type="video/mp4" />
   </video>
 
   {/* OVERLAY */}
