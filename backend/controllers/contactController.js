@@ -25,7 +25,7 @@ export const createContact = async (req, res) => {
       const stream = cloudinary.uploader.upload_stream(
         {
           resource_type: "auto",
-          folder: "vaagdeesha-inquiries",
+          folder: "vaagdesha-inquiries",
         },
         (error, result) => {
 
@@ -52,9 +52,9 @@ export const createContact = async (req, res) => {
 }
 
     const mailOptions = {
-      from: `"Vaagdeesha Interiors" <${process.env.SENDER_EMAIL}>`,
+      from: `"Vaagdesha Interiors" <${process.env.SENDER_EMAIL}>`,
       to: process.env.OWNER_EMAIL,
-      subject: "New Inquiry - Vaagdeesha Interiors",
+      subject: "New Inquiry - Vaagdesha Interiors",
 
       html: `
       <div style="font-family:Arial,sans-serif;background:#f7f7f7;padding:40px;">
