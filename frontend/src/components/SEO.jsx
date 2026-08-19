@@ -54,11 +54,6 @@ export default function SEO({
       )}
 
       <meta
-        property="og:image"
-        content={image}
-      />
-
-      <meta
         property="og:site_name"
         content="Vaagdeesha Interiors"
       />
