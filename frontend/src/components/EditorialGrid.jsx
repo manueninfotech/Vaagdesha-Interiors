@@ -2,8 +2,8 @@ import { useEffect, useState, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
-import p4 from "../assets/projects/p4.png"
-import p5 from "../assets/projects/p5.png"
+import p4 from "../assets/projects/p4.webp";
+import p5 from "../assets/projects/p5.webp";
 
 export default function EditorialGrid() {
   const [offset, setOffset] = useState(0);
@@ -94,9 +94,13 @@ pointer-events-none
       {[ p4, p5 ].map((img, i) => (
         <SwiperSlide key={i}>
           <div className="relative overflow-hidden rounded-2xl group">
-            <img
+            <img 
               src={img}
-              style={{ transform: `translateY(${offset * 0.03}px)` }}
+              alt="Vaagdesha Interiors luxury interior"
+              loading="lazy"
+              decoding="async"
+              width="800"
+              height="500"
               className="h-[250px] w-full object-cover rounded-2xl"
             />
 
@@ -126,6 +130,11 @@ pointer-events-none
   >
     <img
       src={p4}
+      alt="Vaagdesha Interiors luxury interior design"
+      loading="lazy"
+      decoding="async"
+      width="800"
+      height="600"
       className="
         h-[420px]
         w-full object-cover

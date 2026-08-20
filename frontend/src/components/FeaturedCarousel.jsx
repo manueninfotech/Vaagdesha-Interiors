@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import p1 from "../assets/projects/p1.jpg"
-import p2 from "../assets/projects/p2.jpg"
-import p3 from "../assets/projects/p3.jpg"
-import p6 from "../assets/projects/p6.png"
-import p7 from "../assets/projects/p7.png"
-import p8 from "../assets/projects/p8.png"
+import p1 from "../assets/projects/p1.webp";
+import p2 from "../assets/projects/p2.webp";
+import p3 from "../assets/projects/p3.webp";
+import p6 from "../assets/projects/p6.webp";
+import p7 from "../assets/projects/p7.webp";
+import p8 from "../assets/projects/p8.webp";
 
 const projects = [
   {
@@ -128,23 +128,27 @@ if (i === current) {
 
         <div className="relative">
 
-          <img
-            src={project.image}
-            alt={`${project.title} - ${project.location}`}
-            loading={position === "center" ? "eager" : "lazy"}
-            decoding="async"
-            width={position === "center" ? 440 : 280}
-            height={position === "center" ? 300 : 190}
-            className={`
-              object-cover rounded-[32px]
-              transition-all duration-[1000ms]
+          {position !== "hidden" && (
+            <img
+              src={project.image}
+              alt={`${project.title} - ${project.location}`}
+              loading={position === "center" ? "eager" : "lazy"}
+              fetchPriority={position === "center" ? "high" : "auto"}
+              decoding="async"
+              width={position === "center" ? 440 : 280}
+              height={position === "center" ? 300 : 190}
+              className={`
+                object-cover rounded-[32px]
+                transition-all duration-[1000ms]
 
-              ${position === "center"
-                ? "w-[440px] h-[300px]"
-                : "w-[280px] h-[190px]"
-              }
-            `}
-          />
+                ${
+                  position === "center"
+                    ? "w-[440px] h-[300px]"
+                    : "w-[280px] h-[190px]"
+                }
+              `}
+            />
+          )}
 
           {/* OVERLAY */}
           <div className="

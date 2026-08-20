@@ -390,9 +390,13 @@ const scrollRight = () => {
 <div className="absolute inset-0 bg-[#0F0F10]/70" />
         <div className="absolute inset-0 opacity-[0.12]">
   <img
-    src={portfoliobg}
-    className="w-full h-full object-cover"
-  />
+  src={portfoliobg}
+  alt=""
+  aria-hidden="true"
+  loading="lazy"
+  decoding="async"
+  className="w-full h-full object-cover"
+/>
 </div>
         
 
@@ -472,7 +476,11 @@ scrollbar-hide
               {/* IMAGE */}
               <img
                 src={item.cover}
-                alt={item.title}
+                alt={`${item.title} interior design`}
+                loading="lazy"
+                decoding="async"
+                width="640"
+                height="900"
                 className="
                   absolute inset-0 w-full h-full
                   object-cover
@@ -601,6 +609,8 @@ scrollbar-hide
       <img
         src={selectedProject.image}
         alt={selectedProject.name}
+        loading="eager"
+        decoding="async"
         className="w-full h-full object-cover"
       />
 
@@ -733,7 +743,11 @@ scrollbar-hide
 
           <img
             src={project.image}
-            alt={project.name}
+            alt={`${project.name} interior`}
+            loading="lazy"
+            decoding="async"
+            width="96"
+            height="80"
             className="w-20 h-16 sm:w-24 sm:h-20 rounded-xl object-cover"
           />
 
