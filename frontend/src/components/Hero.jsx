@@ -6,6 +6,10 @@ import PanoramaModal from "../components/PanoramaModal";
 import hero360 from "../assets/hero360.png";
 import { useNavigate } from "react-router-dom";
 
+import heroDesktop from "../assets/hero-desktop-1080p.mp4";
+import heroMobile from "../assets/hero-mobile-720p.mp4";
+import heroPoster from "../assets/hero-poster.webp";
+
 
 export default function Hero() {
   const navigate = useNavigate();
@@ -42,7 +46,7 @@ export default function Hero() {
       
       <div className="relative h-[100vh] md:h-[115vh] w-full overflow-hidden">
 
-  {/* VIDEO */}
+  {/* VIDEO 
   <video
     autoPlay
     muted
@@ -52,6 +56,28 @@ export default function Hero() {
   >
     <source src={heroo} type="video/mp4" />
   </video>
+  */}
+  <video
+  autoPlay
+  muted
+  loop
+  playsInline
+  preload="metadata"
+  poster={heroPoster}
+  className="absolute inset-0 w-full h-full object-cover"
+>
+  <source
+    src={heroDesktop}
+    media="(min-width: 768px)"
+    type="video/mp4"
+  />
+
+  <source
+    src={heroMobile}
+    media="(max-width: 767px)"
+    type="video/mp4"
+  />
+</video>
 
   {/* OVERLAY */}
   <div className="absolute inset-0 bg-black/15"></div>
