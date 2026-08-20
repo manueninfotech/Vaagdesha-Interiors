@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import heroo from "../assets/heroo.mp4";
-import hero from "../assets/hero-optimized.mp4";
+{/*import heroo from "../assets/heroo.mp4";
+import hero from "../assets/hero-optimized.mp4";*/}
 import logo1 from "../assets/logo1.png";
 import PanoramaModal from "../components/PanoramaModal";
 import hero360 from "../assets/hero360.png";
@@ -57,13 +57,21 @@ export default function Hero() {
     <source src={heroo} type="video/mp4" />
   </video>
   */}
-  <video
+ {/* HERO POSTER - loads immediately */}
+<img
+  src={heroPoster}
+  alt=""
+  fetchPriority="high"
+  className="absolute inset-0 w-full h-full object-cover"
+/>
+
+{/* HERO VIDEO */}
+<video
   autoPlay
   muted
   loop
   playsInline
   preload="metadata"
-  poster={heroPoster}
   className="absolute inset-0 w-full h-full object-cover"
 >
   <source
