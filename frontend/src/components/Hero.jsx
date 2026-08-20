@@ -16,6 +16,7 @@ export default function Hero() {
   const [offset, setOffset] = useState(0);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const [open360, setOpen360] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -72,7 +73,12 @@ export default function Hero() {
   loop
   playsInline
   preload="metadata"
-  className="absolute inset-0 w-full h-full object-cover"
+  onCanPlay={() => setVideoReady(true)}
+  className={`
+    absolute inset-0 w-full h-full object-cover
+    transition-opacity duration-500
+    ${videoReady ? "opacity-100" : "opacity-0"}
+  `}
 >
   <source
     src={heroDesktop}

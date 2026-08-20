@@ -130,6 +130,11 @@ if (i === current) {
 
           <img
             src={project.image}
+            alt={`${project.title} - ${project.location}`}
+            loading={position === "center" ? "eager" : "lazy"}
+            decoding="async"
+            width={position === "center" ? 440 : 280}
+            height={position === "center" ? 300 : 190}
             className={`
               object-cover rounded-[32px]
               transition-all duration-[1000ms]
