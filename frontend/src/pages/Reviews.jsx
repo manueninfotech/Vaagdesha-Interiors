@@ -5,13 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 
-import reviewhero from "../assets/reviews/review-hero.png"
-import review from "../assets/reviews/review.png"
-import transformation1 from "../assets/reviews/transformation1.png"
-import transformation2 from "../assets/reviews/transformation2.png"
-import transformation3 from "../assets/reviews/transformation3.png"
-import transformation4 from "../assets/reviews/transformation4.png"
-import transformation5 from "../assets/reviews/transformation5.png"
+import reviewhero from "../assets/reviews/review-hero.webp";
+import review from "../assets/reviews/review.webp";
+import transformation1 from "../assets/reviews/transformation1.webp";
+import transformation2 from "../assets/reviews/transformation2.webp";
+import transformation3 from "../assets/reviews/transformation3.webp";
+import transformation4 from "../assets/reviews/transformation4.webp";
+import transformation5 from "../assets/reviews/transformation5.webp";
 
 
 export default function Reviews() {
@@ -107,18 +107,20 @@ const transformations = [
 
   {/* BACKGROUND IMAGE */}
   <img
-    src={reviewhero}
-    alt=""
-    className="
-      absolute inset-0
-      w-full h-full
-      object-cover
-
-      scale-[1.03]
-
-      brightness-[0.58]
-    "
-  />
+  src={reviewhero}
+  alt="Luxury interior design project by Vaagdesha Interiors"
+  fetchPriority="high"
+  decoding="async"
+  width="1920"
+  height="1080"
+  className="
+    absolute inset-0
+    w-full h-full
+    object-cover
+    scale-[1.03]
+    brightness-[0.58]
+  "
+/>
 
   {/* DARK OVERLAY */}
   <div
@@ -547,16 +549,17 @@ border border-white/[0.05] p-5 sm:p-6 rounded-xl border border-[#E5D9CC]">
 
       <img
         src={review}
+        alt="Luxury interior transformation by Vaagdesha Interiors"
+        loading="lazy"
+        decoding="async"
+        width="900"
+        height="700"
         className={`
           w-full
           h-[320px] sm:h-[420px] md:h-[560px]
-
           object-cover
-
           transition-transform duration-[2200ms] ease-out
-
           group-hover:scale-105
-
           ${imgVisible ? "scale-100" : "scale-110"}
         `}
       />
@@ -805,7 +808,11 @@ border border-white/[0.05] p-5 sm:p-6 rounded-xl border border-[#E5D9CC]">
 
       <img
         src={item.image}
-        alt=""
+        alt={`${item.title} - Vaagdesha Interiors`}
+        loading="lazy"
+        decoding="async"
+        width="1200"
+        height="700"
         className="
           w-full h-full object-cover
           transition-transform duration-[2500ms]

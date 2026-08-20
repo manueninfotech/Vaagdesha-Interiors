@@ -8,16 +8,16 @@ import "swiper/css";
 import { ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
 
-import servicehero from "../assets/services/services-hero.png";
-import service1 from "../assets/services/service1.png";
-import service2 from "../assets/services/service2.png";
-import service3 from "../assets/services/service3.jpg";
-import service4 from "../assets/services/service4.png";
-import service5 from "../assets/services/service5.png";
+import servicehero from "../assets/services/services-hero.webp";
+import service1 from "../assets/services/service1.webp";
+import service2 from "../assets/services/service2.webp";
+import service3 from "../assets/services/service3.webp";
+import service4 from "../assets/services/service4.webp";
+import service5 from "../assets/services/service5.webp";
 
-import process from "../assets/services/process-3d.png";
-import process1 from "../assets/services/process1-3d.png";
-import process2 from "../assets/services/process2-3d.png";
+import process from "../assets/services/process-3d.webp";
+import process1 from "../assets/services/process1-3d.webp";
+import process2 from "../assets/services/process2-3d.webp";
 
 export default function Services() {
    const navigate = useNavigate();
@@ -250,19 +250,23 @@ bg-[#050505]
   <div className="absolute inset-0">
 
     <motion.img
-    src={servicehero}
-    alt=""
-    initial={{ scale: 1 }}
-    animate={{ scale: 1.08 }}
-    transition={{
-        duration: 10,
-        ease: "easeOut",
-    }}
-    className="
-        absolute inset-0
-        w-full h-full
-        object-cover
-    "
+  src={servicehero}
+  alt="Luxury interior design by Vaagdesha Interiors"
+  fetchPriority="high"
+  decoding="async"
+  width="1920"
+  height="1080"
+  initial={{ scale: 1 }}
+  animate={{ scale: 1.08 }}
+  transition={{
+    duration: 10,
+    ease: "easeOut",
+  }}
+  className="
+    absolute inset-0
+    w-full h-full
+    object-cover
+  "
 />
 
     {/* LEFT GRADIENT */}
@@ -556,17 +560,19 @@ blur-[60px]
 
         <img
           src={service.image}
-          alt=""
+          alt={`${service.title} - Vaagdesha Interiors`}
+          loading={index === 0 ? "eager" : "lazy"}
+          decoding="async"
+          width="800"
+          height="600"
           className="
             w-full
             h-[220px]
             sm:h-[280px]
             md:h-[360px]
             object-cover
-
             transition-transform
             duration-[1200ms]
-
             hover:scale-105
           "
         />
@@ -1053,18 +1059,19 @@ blur-[60px]
 
                         <img
                           src={item.image}
-                          alt={item.title}
-
+                          alt={`${item.title} - Vaagdesha Interiors`}
+                          loading="lazy"
+                          decoding="async"
+                          width="760"
+                          height="760"
                           className="
-              w-full
-              max-w-[340px]
-              sm:max-w-[520px]
-              md:max-w-[760px]
-
-              object-contain
-
-              drop-shadow-[0_40px_120px_rgba(0,0,0,0.85)]
-            "
+                            w-full
+                            max-w-[340px]
+                            sm:max-w-[520px]
+                            md:max-w-[760px]
+                            object-contain
+                            drop-shadow-[0_40px_120px_rgba(0,0,0,0.85)]
+                          "
                         />
 
                       </div>

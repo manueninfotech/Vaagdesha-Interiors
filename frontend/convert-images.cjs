@@ -5,6 +5,8 @@ const path = require("path");
 const folders = [
   "./src/assets/projects",
   "./src/assets/collections",
+  "./src/assets/services",
+  "./src/assets/reviews",
 ];
 
 async function convertFolder(folder) {
