@@ -1862,8 +1862,8 @@ to-[#262626]/95" />
         className="
     relative overflow-hidden
 
-    pt-12 sm:pt-14 md:pt-12
-    pb-20 sm:pb-24 md:pb-24
+    pt-8 sm:pt-10 md:pt-8
+    pb-10 sm:pb-12 md:pb-12
 
     px-4 sm:px-6
 
@@ -1945,7 +1945,7 @@ to-[#262626]/95" />
         font-serif
         text-[#F5F1EA]
 
-        mb-5 sm:mb-6
+        mb-3 sm:mb-4
       "
           >
             Signature Services
@@ -1959,7 +1959,7 @@ to-[#262626]/95" />
 
         text-[#A8A29E]
 
-        mb-10 sm:mb-12 md:mb-16
+        mb-6 sm:mb-8 md:mb-8
 
         text-[14px]
         sm:text-sm
@@ -2007,31 +2007,31 @@ to-[#262626]/95" />
             {/* TABLET FRAME */}
             <div
               className="
-          relative z-10
+                relative z-10
 
-          w-full
+                w-full
+                max-w-4xl
+                mx-auto
 
-          aspect-[16/11]
-          sm:aspect-[16/10]
+                aspect-[16/8.5]
 
-          bg-[#111111]/70
+                bg-[#111111]/70
 
-          border border-[#C89B3C]/20
-          ring-1 ring-white/10
+                border border-[#C89B3C]/20
+                ring-1 ring-white/10
 
-          rounded-[24px]
-          sm:rounded-[32px]
-          md:rounded-[40px]
+                rounded-[20px]
+                sm:rounded-[28px]
+                md:rounded-[32px]
 
-          shadow-[0_30px_120px_rgba(0,0,0,0.65)]
-          shadow-[#C89B3C]/10
+                shadow-[0_30px_100px_rgba(0,0,0,0.65)]
 
-          overflow-hidden
+                overflow-hidden
 
-          backdrop-blur-[2px]
+                backdrop-blur-[2px]
 
-          transition-all duration-700
-        "
+                transition-all duration-700
+              "
             >
 
               {/* INNER BORDER */}
@@ -2125,7 +2125,7 @@ to-[#262626]/95" />
 
             text-left
 
-            p-5 sm:p-8 md:p-14
+            p-5 sm:p-7 md:p-10
 
             animate-[fadeIn_0.8s_ease]
           "
@@ -2150,9 +2150,9 @@ to-[#262626]/95" />
                 {/* TITLE */}
                 <h3
                   className="
-              text-[28px]
-              sm:text-4xl
-              md:text-5xl
+              text-[24px]
+              sm:text-3xl
+              md:text-4xl
 
               font-serif
               text-[#F5F1EA]
@@ -2187,7 +2187,7 @@ to-[#262626]/95" />
                   className="
               flex items-center justify-between
 
-              mt-6 sm:mt-8 md:mt-10
+              mt-4 sm:mt-5 md:mt-6
             "
                 >
 
