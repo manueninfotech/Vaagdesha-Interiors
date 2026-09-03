@@ -15,7 +15,7 @@ import luxuryvilla from "../assets/luxury-villa.png"
 import atelier1 from "../assets/atelier1.jpg";
 import atelier2 from "../assets/atelier2.jpg";
 
-import portfolio1 from "../assets/portfolio/portfolio1.png"
+import portfolio1 from "../assets/portfolio/portfolio.png"
 import portfolio2 from "../assets/portfolio/portfolio2.jpg"
 import portfolio4 from "../assets/portfolio/portfolio4.jpg"
 import portfolio3 from "../assets/portfolio/portfolio3.png"

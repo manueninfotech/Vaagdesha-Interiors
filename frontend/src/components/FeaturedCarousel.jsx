@@ -6,7 +6,7 @@ import p2 from "../assets/projects/p2.webp";
 import p3 from "../assets/projects/p3.webp";
 import p6 from "../assets/projects/p6.webp";
 import p7 from "../assets/projects/p7.webp";
-import p8 from "../assets/projects/p8.webp";
+import p9 from "../assets/projects/p9.png";
 
 const projects = [
   {
@@ -35,7 +35,7 @@ const projects = [
     location: "RESIDENCE — BANGALORE",
   },
   {
-    image: p8,
+    image: p9,
     title: "Kitchen Elegance",
     location: "BUNGALOW — KOCHI",
   },
