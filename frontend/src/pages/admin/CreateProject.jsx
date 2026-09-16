@@ -1,22 +1,20 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import html2canvas from "html2canvas-pro";
+import jsPDF from "jspdf";
 import {
-  LayoutDashboard,
   FolderPlus,
-  FolderOpen,
-  Settings,
-  Plus,
   FileText,
 } from "lucide-react";
 
-import ProjectSection from "../components/admin/ProjectSection";
-import ProjectPreview from "../components/admin/ProjectPreview";
-import ProjectSpecificationPreview from "../components/admin/ProjectSpecificationPreview";
-import Projects from "../components/admin/Projects";
+import ProjectSection from "../../components/admin/ProjectSection";
+import ProjectSpecificationPreview from "../../components/admin/ProjectSpecificationPreview";
 
 const generalSections = [
   {
     id: "brandDetails",
     title: "Brand Details",
+    allowImages: false,
     fields: [
       {
         id: "brandName",
@@ -219,10 +217,18 @@ const createInitialSections = () => {
   return sections;
 };
 
-export default function Admin() {
+export default function CreateProject() {
   const [activeTab, setActiveTab] = useState("general");
-  const [activePage, setActivePage] = useState("create");
-  const [showPreview, setShowPreview] = useState(false);
+    const [showPreview, setShowPreview] = useState(false);
+    const pdfPreviewRef = useRef(null);
+
+    const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
+
+    const editId = searchParams.get("edit");
+
+    const [loadingProject, setLoadingProject] = useState(false);
+    const [saving, setSaving] = useState(false);
   const [project, setProject] = useState({
     projectId: "",
     projectName: "",
@@ -230,9 +236,76 @@ export default function Admin() {
     location: "",
     projectType: "Residential",
     date: "",
-    coverImage: "",
     sections: createInitialSections(),
   });
+
+  useEffect(() => {
+  if (!editId) return;
+
+  const fetchProject = async () => {
+    try {
+      setLoadingProject(true);
+
+      const response = await fetch(
+        `http://localhost:5000/api/project-specifications/${editId}`
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.message || "Failed to load project"
+        );
+      }
+
+      const savedProject = data.project;
+
+      setProject({
+  projectId: savedProject.projectId || "",
+  projectName: savedProject.projectName || "",
+  clientName: savedProject.clientName || "",
+  location: savedProject.location || "",
+  projectType: savedProject.projectType || "Residential",
+  date: savedProject.date
+    ? savedProject.date.substring(0, 10)
+    : "",
+
+  sections: Object.fromEntries(
+    allSections.map((section) => {
+      const savedSection = savedProject.sections?.[section.id];
+
+      return [
+        section.id,
+        {
+          fields: {
+            ...createInitialSections()[section.id].fields,
+            ...(savedSection?.fields || {}),
+          },
+          description: savedSection?.description || "",
+          images: Array.isArray(savedSection?.images)
+            ? savedSection.images.filter(Boolean)
+            : [],
+        },
+      ];
+    })
+  ),
+});
+    } catch (error) {
+      console.error("Load Project Error:", error);
+
+      alert(
+        error.message ||
+          "Something went wrong while loading the project."
+      );
+
+      navigate("/admin/projects");
+    } finally {
+      setLoadingProject(false);
+    }
+  };
+
+  fetchProject();
+}, [editId, navigate]);
 
   const updateProjectField = (field, value) => {
     setProject((prev) => ({
@@ -308,140 +381,356 @@ export default function Admin() {
     });
   };
 
-  const handleSaveDraft = async () => {
-  try {
-    // Basic validation
-    if (!project.projectId.trim()) {
-      alert("Please enter a Project ID.");
-      return;
-    }
+  const uploadImageToCloudinary = async (file) => {
+  const formData = new FormData();
 
-    if (!project.projectName.trim()) {
-      alert("Please enter a Project Name.");
-      return;
-    }
+  formData.append("image", file);
 
-    const response = await fetch(
-      "http://localhost:5000/api/project-specifications",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(project),
+  const response = await fetch(
+    "http://localhost:5000/api/upload-project-image",
+    {
+      method: "POST",
+      body: formData,
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.message || "Failed to upload image"
+    );
+  }
+
+  return data.image;
+};
+
+const prepareProjectForSave = async () => {
+  const updatedSections = {};
+
+  for (const section of allSections) {
+    const currentSection =
+      project.sections?.[section.id] || {};
+
+    const currentImages = Array.isArray(currentSection.images)
+      ? currentSection.images.filter(Boolean)
+      : [];
+
+    const uploadedImages = [];
+
+    for (const image of currentImages) {
+      // Already uploaded to Cloudinary
+      if (image.url && image.publicId) {
+        uploadedImages.push({
+          url: image.url,
+          publicId: image.publicId,
+        });
+
+        continue;
       }
+
+      // New local image
+      if (image.file) {
+        const uploadedImage = await uploadImageToCloudinary(
+          image.file
+        );
+
+        uploadedImages.push(uploadedImage);
+      }
+    }
+
+    updatedSections[section.id] = {
+      fields: currentSection.fields || {},
+      description: currentSection.description || "",
+      images: uploadedImages,
+    };
+  }
+
+  return {
+    ...project,
+    sections: updatedSections,
+  };
+};
+
+  const saveProject = async () => {
+  if (!project.projectName.trim()) {
+    throw new Error("Please enter a Project Name.");
+  }
+
+  const projectToSave = await prepareProjectForSave();
+
+  const url = editId
+    ? `http://localhost:5000/api/project-specifications/${editId}`
+    : "http://localhost:5000/api/project-specifications";
+
+  const method = editId ? "PUT" : "POST";
+
+  const response = await fetch(url, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(projectToSave),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.message ||
+        `Failed to ${editId ? "update" : "save"} project`
+    );
+  }
+
+  /*
+   * IMPORTANT:
+   * Backend returns the generated Project ID here.
+   *
+   * New project:
+   * VAI-2026-001
+   *
+   * Existing project:
+   * keeps its existing ID.
+   */
+  setProject(data.project);
+
+  return data.project;
+};
+
+const handleSaveDraft = async () => {
+  try {
+    setSaving(true);
+
+    await saveProject();
+
+    alert(
+      editId
+        ? "Project updated successfully!"
+        : "Project specification saved successfully!"
     );
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || "Failed to save project");
+    if (editId) {
+      navigate(`/admin/projects/${editId}`);
     }
-
-    console.log("Project saved:", data.project);
-
-    alert("Project specification saved successfully!");
-
   } catch (error) {
-    console.error("Save Project Error:", error);
+    console.error(
+      editId
+        ? "Update Project Error:"
+        : "Save Project Error:",
+      error
+    );
 
     alert(
       error.message ||
-      "Something went wrong while saving the project."
+        "Something went wrong while saving the project."
     );
+  } finally {
+    setSaving(false);
   }
 };
 
-  const handleGeneratePDF = () => {
-    console.log("Project data for PDF:", project);
+  const handleGeneratePDF = async () => {
+  try {
+    if (!project.projectName?.trim()) {
+      alert("Please enter a Project Name before generating the PDF.");
+      return;
+    }
 
-    alert("PDF generation will be added in the next step.");
-  };
+    setSaving(true);
+
+    // =========================================================
+    // STEP 1 — SAVE PROJECT FIRST
+    // =========================================================
+    //
+    // For a NEW project:
+    // Backend generates:
+    // VAI-2026-001
+    //
+    // For an EXISTING project:
+    // Existing Project ID is preserved.
+    //
+    const savedProject = await saveProject();
+
+    // =========================================================
+    // STEP 2 — WAIT FOR REACT TO UPDATE THE PREVIEW
+    // =========================================================
+    //
+    // setProject() above updates the preview asynchronously.
+    // We need to wait until the DOM has rendered the new ID.
+    //
+    await new Promise((resolve) =>
+      requestAnimationFrame(() => resolve())
+    );
+
+    await new Promise((resolve) =>
+      requestAnimationFrame(() => resolve())
+    );
+
+    // Small extra delay to make sure layout is complete
+    await new Promise((resolve) =>
+      setTimeout(resolve, 300)
+    );
+
+    // =========================================================
+    // STEP 3 — GET PDF PREVIEW
+    // =========================================================
+
+    const pdfContainer = pdfPreviewRef.current;
+
+    if (!pdfContainer) {
+      throw new Error("PDF preview is not ready.");
+    }
+
+    // =========================================================
+    // STEP 4 — MAKE SURE FONTS ARE LOADED
+    // =========================================================
+
+    if (document.fonts?.ready) {
+      await document.fonts.ready;
+    }
+
+    // =========================================================
+    // STEP 5 — WAIT FOR ALL IMAGES
+    // =========================================================
+
+    const images = Array.from(
+      pdfContainer.querySelectorAll("img")
+    );
+
+    await Promise.all(
+      images.map((img) => {
+        if (img.complete) {
+          return Promise.resolve();
+        }
+
+        return new Promise((resolve) => {
+          img.onload = resolve;
+          img.onerror = resolve;
+        });
+      })
+    );
+
+    // =========================================================
+    // STEP 6 — SMALL LAYOUT DELAY
+    // =========================================================
+
+    await new Promise((resolve) =>
+      setTimeout(resolve, 300)
+    );
+
+    // =========================================================
+    // STEP 7 — GET ALL PDF PAGES
+    // =========================================================
+
+    const pages = Array.from(
+      pdfContainer.querySelectorAll(".pdf-page")
+    );
+
+    if (!pages.length) {
+      throw new Error("No PDF pages found.");
+    }
+
+    // =========================================================
+    // STEP 8 — CREATE PDF
+    // =========================================================
+
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4",
+      compress: true,
+    });
+
+    // =========================================================
+    // STEP 9 — CONVERT EACH PAGE
+    // =========================================================
+
+    for (let i = 0; i < pages.length; i++) {
+      const page = pages[i];
+
+      const canvas = await html2canvas(page, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: false,
+        backgroundColor: "#F8F4EE",
+        logging: false,
+        imageTimeout: 15000,
+      });
+
+      const imageData = canvas.toDataURL(
+        "image/jpeg",
+        0.95
+      );
+
+      if (i > 0) {
+        pdf.addPage();
+      }
+
+      pdf.addImage(
+        imageData,
+        "JPEG",
+        0,
+        0,
+        210,
+        297,
+        undefined,
+        "FAST"
+      );
+    }
+
+    // =========================================================
+    // STEP 10 — PDF FILE NAME
+    // =========================================================
+
+    const safeProjectName = savedProject.projectName
+      .trim()
+      .replace(/[^a-z0-9]+/gi, "-")
+      .replace(/^-+|-+$/g, "")
+      .toLowerCase();
+
+    const projectId = savedProject.projectId
+      ? `-${savedProject.projectId.toLowerCase()}`
+      : "";
+
+    pdf.save(
+      `${safeProjectName || "vaagdesha-project"}${projectId}-specification.pdf`
+    );
+
+    // =========================================================
+    // SUCCESS
+    // =========================================================
+
+    alert(
+      `Project PDF generated successfully!\n\nProject ID: ${savedProject.projectId}`
+    );
+  } catch (error) {
+    console.error("PDF Generation Error:", error);
+
+    alert(
+      error.message ||
+        "Something went wrong while generating the PDF."
+    );
+  } finally {
+    setSaving(false);
+  }
+};
+
+  if (loadingProject) {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-[#F5EFE6]">
+      <div className="flex items-center gap-3 text-[#8B7A6B]">
+        <div className="h-5 w-5 animate-spin rounded-full border-2 border-[#E5D9CC] border-t-[#5A0F14]" />
+        Loading project...
+      </div>
+    </div>
+  );
+}
 
   return (
     <div className="flex min-h-screen bg-[#F5EFE6] text-[#3E3E3E]">
 
-      {/* SIDEBAR */}
-      <aside className="hidden w-64 shrink-0 border-r border-[#E5D9CC] bg-white p-6 lg:block">
-
-        {/* LOGO / TITLE */}
-        <div className="mb-10">
-          <h1 className="text-2xl font-serif text-[#5A0F14]">
-            Vaagdesha
-          </h1>
-
-          <p className="mt-1 text-xs uppercase tracking-[0.2em] text-[#A49588]">
-            Interiors Admin
-          </p>
-        </div>
-
-        {/* NAVIGATION */}
-        <nav className="space-y-2">
-
-          <button
-            type="button"
-            className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm text-[#6D5C4D] transition hover:bg-[#FAF6F0] hover:text-[#5A0F14]"
-          >
-            <LayoutDashboard size={18} />
-            Dashboard
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActivePage("create")}
-            className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm transition ${
-              activePage === "create"
-                ? "bg-[#5A0F14] text-white shadow-sm"
-                : "text-[#6D5C4D] hover:bg-[#FAF6F0] hover:text-[#5A0F14]"
-            }`}
-          >
-            <FolderPlus size={18} />
-            Create Project
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActivePage("projects")}
-            className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm transition ${
-              activePage === "projects"
-                ? "bg-[#5A0F14] text-white shadow-sm"
-                : "text-[#6D5C4D] hover:bg-[#FAF6F0] hover:text-[#5A0F14]"
-            }`}
-          >
-            <FolderOpen size={18} />
-            Projects
-          </button>
-
-          <button
-            type="button"
-            className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm text-[#6D5C4D] transition hover:bg-[#FAF6F0] hover:text-[#5A0F14]"
-          >
-            <Settings size={18} />
-            Settings
-          </button>
-
-        </nav>
-
-      </aside>
-
       {/* MAIN CONTENT */}
       <main className="min-w-0 flex-1">
-
-        {activePage === "projects" ? (
-          <div className="p-6 lg:p-10">
-
-            <Projects
-              onCreateProject={() => setActivePage("create")}
-              onViewProject={(project) => {
-                console.log("View project:", project);
-              }}
-              onEditProject={(project) => {
-                console.log("Edit project:", project);
-              }}
-            />
-
-          </div>
-        ) : (
 
         <div>
 
@@ -452,11 +741,11 @@ export default function Admin() {
 
             <div>
               <p className="text-xs uppercase tracking-[0.2em] text-[#A49588]">
-                Project Management
+                {editId ? "Project Management / Edit" : "Project Management"}
               </p>
 
               <h2 className="mt-1 text-2xl font-serif text-[#5A0F14] lg:text-3xl">
-                Create Project
+                {editId ? "Edit Project" : "Create Project"}
               </h2>
             </div>
 
@@ -465,9 +754,14 @@ export default function Admin() {
               <button
                 type="button"
                 onClick={handleSaveDraft}
-                className="rounded-xl border border-[#D7C8B8] bg-white px-5 py-2.5 text-sm font-medium text-[#6D5C4D] transition hover:border-[#B08D57] hover:text-[#5A0F14]"
-              >
-                Save Draft
+                disabled={saving}
+                className="rounded-xl border border-[#D7C8B8] bg-white px-5 py-2.5 text-sm font-medium text-[#6D5C4D] transition hover:border-[#B08D57] hover:text-[#5A0F14] disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                {saving
+                    ? "Saving..."
+                    : editId
+                    ? "Update Project"
+                    : "Save Draft"}
               </button>
 
               <button
@@ -476,7 +770,7 @@ export default function Admin() {
                 className="flex items-center gap-2 rounded-xl bg-[#5A0F14] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[#741820]"
               >
                 <FileText size={17} />
-                Preview Project
+                Preview Pdf
               </button>
 
             </div>
@@ -516,25 +810,19 @@ export default function Admin() {
 
               {/* PROJECT ID */}
               <div>
-
-                <label className="mb-2 block text-sm font-medium text-[#6D5C4D]">
+                <label className="mb-2 block text-sm font-medium text-[#3E3E3E]">
                   Project ID
                 </label>
 
-                <input
-                  type="text"
-                  value={project.projectId}
-                  onChange={(e) =>
-                    updateProjectField("projectId", e.target.value)
-                  }
-                  placeholder="Example: VGI-2026-001"
-                  className="w-full rounded-xl border border-[#E5D9CC] bg-[#FCFAF7] px-4 py-3 text-sm text-[#3E3E3E] outline-none transition placeholder:text-[#B5A79A] focus:border-[#B08D57] focus:ring-1 focus:ring-[#B08D57]"
-                />
+                <div className="rounded-xl border border-[#E5D9CC] bg-[#F5EFE6] px-4 py-3">
+                  <div className="text-sm font-semibold tracking-wide text-[#5A0F14]">
+                    {project.projectId || "Auto-generated"}
+                  </div>
 
-                <p className="mt-1.5 text-xs text-[#A49588]">
-                  Unique reference for this project.
-                </p>
-
+                  <p className="mt-1 text-xs text-[#8B7A6B]">
+                    Project ID will be generated automatically when the project is saved.
+                  </p>
+                </div>
               </div>
 
 
@@ -642,48 +930,6 @@ export default function Admin() {
 
               </div>
 
-              <div className="md:col-span-2">
-              <label className="mb-2 block text-sm font-medium text-[#3E3E3E]">
-                Project Cover Image
-              </label>
-
-              <p className="mb-3 text-xs text-[#8B7A6B]">
-                Main 3D render used on the first page of the specification.
-              </p>
-
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-
-                  if (!file) return;
-
-                  const reader = new FileReader();
-
-                  reader.onload = () => {
-                    setProject((prev) => ({
-                      ...prev,
-                      coverImage: reader.result,
-                    }));
-                  };
-
-                  reader.readAsDataURL(file);
-                }}
-                className="block w-full rounded-lg border border-[#E5D9CC] bg-white px-4 py-3 text-sm text-[#3E3E3E] file:mr-4 file:rounded-md file:border-0 file:bg-[#5A0F14] file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-[#470B0F]"
-              />
-
-              {project.coverImage && (
-                <div className="mt-4 overflow-hidden rounded-lg border border-[#E5D9CC]">
-                  <img
-                    src={project.coverImage}
-                    alt="Project cover preview"
-                    className="h-48 w-full object-cover"
-                  />
-                </div>
-              )}
-            </div>
-
             </div>
 
           </section>
@@ -774,6 +1020,7 @@ export default function Admin() {
                     key={section.id}
                     title={section.title}
                     fields={section.fields}
+                    allowImages={section.allowImages !== false}
                     fieldValues={project.sections[section.id].fields}
                     description={project.sections[section.id].description}
                     onFieldChange={(fieldId, value) =>
@@ -821,6 +1068,7 @@ export default function Admin() {
                     key={section.id}
                     title={section.title}
                     fields={section.fields}
+                    allowImages={section.allowImages !== false}
                     fieldValues={project.sections[section.id].fields}
                     description={project.sections[section.id].description}
                     images={project.sections[section.id].images}
@@ -849,9 +1097,14 @@ export default function Admin() {
           <button
             type="button"
             onClick={handleSaveDraft}
-            className="rounded-xl border border-[#D7C8B8] bg-white px-6 py-3 text-sm font-medium text-[#6D5C4D] transition hover:border-[#B08D57] hover:text-[#5A0F14]"
-          >
-            Save Draft
+            disabled={saving}
+            className="rounded-xl border border-[#D7C8B8] bg-white px-5 py-2.5 text-sm font-medium text-[#6D5C4D] transition hover:border-[#B08D57] hover:text-[#5A0F14] disabled:cursor-not-allowed disabled:opacity-60"
+            >
+            {saving
+                ? "Saving..."
+                : editId
+                ? "Update Project"
+                : "Save Draft"}
           </button>
 
           <button
@@ -859,7 +1112,7 @@ export default function Admin() {
             onClick={() => setShowPreview(true)}
             className="rounded-xl border border-[#B08D57] bg-white px-6 py-3 text-sm font-medium text-[#5A0F14] transition hover:bg-[#F8F1E8]"
           >
-            Preview Project
+            Preview Pdf
           </button>
 
           <button
@@ -877,9 +1130,22 @@ export default function Admin() {
 
           </div>
 
-  )}
-
 </main>
+
+     {/* =========================
+          HIDDEN PDF RENDERER
+      ========================= */}
+
+      <div
+        ref={pdfPreviewRef}
+        className="fixed left-[-10000px] top-0 z-[-1] w-[794px]"
+        aria-hidden="true"
+      >
+        <ProjectSpecificationPreview
+          project={project}
+          sections={allSections}
+        />
+      </div>
       {showPreview && (
       <div className="fixed inset-0 z-[100] overflow-y-auto bg-black/60">
 

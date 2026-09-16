@@ -1,9 +1,11 @@
 import express from "express";
 import dotenv from "dotenv";
-// import mongoose from "mongoose";
+import mongoose from "mongoose";
 import cors from "cors";
 
 import contactRoutes from "./routes/contactRoutes.js";
+import projectSpecificationRoutes from "./routes/projectSpecificationRoutes.js";
+import uploadRoutes from "./routes/uploadRoutes.js";
 
 dotenv.config();
 
@@ -28,12 +30,14 @@ app.use(
 
 app.use(express.json());
 
-// mongoose
-//   .connect(process.env.MONGO_URI)
-//   .then(() => console.log("✅ MongoDB Connected"))
-//   .catch((err) => console.log(err));
+ mongoose
+   .connect(process.env.MONGO_URI)
+   .then(() => console.log("✅ MongoDB Connected"))
+   .catch((err) => console.log(err));
 
 app.use("/api", contactRoutes);
+app.use("/api", projectSpecificationRoutes);
+app.use("/api", uploadRoutes);
 
 const PORT = process.env.PORT || 5000;
 

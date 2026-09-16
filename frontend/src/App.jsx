@@ -10,7 +10,11 @@ import Contact from "./pages/Contact";
 import CursorGlow from "./components/CursorGlow";
 import Footer from "./components/Footer";
 
-import Admin from "./pages/Admin";
+
+import AdminLayout from "./components/admin/AdminLayout";
+import CreateProject from "./pages/admin/CreateProject";
+import Projects from "./pages/admin/Projects";
+import ProjectView from "./pages/admin/ProjectView";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -23,10 +27,17 @@ function AnimatedRoutes() {
         <Route path="/services" element={<Services />} />
         <Route path="/reviews" element={<Reviews />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/admin" element={<Admin />} />
+
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<CreateProject />} />
+          <Route path="create-project" element={<CreateProject />} />
+          <Route path="projects" element={<Projects />} />
+          <Route path="projects/:id" element={<ProjectView />} />
+        </Route>
+       
       </Routes>
 
-      {location.pathname !== "/admin" && <Footer />}
+      {!location.pathname.startsWith("/admin") && <Footer />}
 
       <Toaster
         position="top-right"

@@ -13,6 +13,8 @@
     "@studio-freight/lenis": "^1.0.42",
     "@tailwindcss/vite": "^4.2.3",
     "framer-motion": "^12.38.0",
+    "html2canvas-pro": "^2.4.3",
+    "jspdf": "^4.2.1",
     "lucide-react": "^1.8.0",
     "pannellum": "^2.5.7",
     "react": "^19.2.5",
