@@ -745,7 +745,7 @@ const handleSaveDraft = async () => {
               </p>
 
               <h2 className="mt-1 text-2xl font-serif text-[#5A0F14] lg:text-3xl">
-                {editId ? "Edit Project" : "Create Project"}
+                {editId ? "Edit Pdf" : "Create Pdf"}
               </h2>
             </div>
 
