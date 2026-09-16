@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 
 import ProjectSpecificationPreview from "../../components/admin/ProjectSpecificationPreview";
+const API_URL = import.meta.env.VITE_API_URL;
 
 
 /* =========================================================
@@ -22,20 +23,6 @@ import ProjectSpecificationPreview from "../../components/admin/ProjectSpecifica
 ========================================================= */
 
 const generalSections = [
-  {
-    id: "brandDetails",
-    title: "Brand Details",
-    fields: [
-      {
-        id: "brandName",
-        label: "Brand / Material Name",
-      },
-      {
-        id: "details",
-        label: "Brand Details",
-      },
-    ],
-  },
 
   {
     id: "hall",
@@ -258,8 +245,8 @@ export default function ProjectView() {
         setLoading(true);
 
         const response = await fetch(
-          `http://localhost:5000/api/project-specifications/${id}`
-        );
+  `${API_URL}/api/project-specifications/${id}`
+);
 
         const data = await response.json();
 

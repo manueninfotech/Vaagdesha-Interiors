@@ -7,6 +7,7 @@ import {
   FileText,
   Loader2,
 } from "lucide-react";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Projects({
   onCreateProject,
@@ -23,8 +24,8 @@ export default function Projects({
       setError("");
 
       const response = await fetch(
-        "http://localhost:5000/api/project-specifications"
-      );
+  `${API_URL}/api/project-specifications`
+);
 
       const data = await response.json();
 
@@ -56,7 +57,7 @@ export default function Projects({
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/project-specifications/${id}`,
+        `${API_URL}/api/project-specifications/${id}`,
         {
           method: "DELETE",
         }

@@ -10,22 +10,9 @@ import {
 import ProjectSection from "../../components/admin/ProjectSection";
 import ProjectSpecificationPreview from "../../components/admin/ProjectSpecificationPreview";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const generalSections = [
-  {
-    id: "brandDetails",
-    title: "Brand Details",
-    allowImages: false,
-    fields: [
-      {
-        id: "brandName",
-        label: "Brand / Material Name",
-      },
-      {
-        id: "details",
-        label: "Brand Details",
-      },
-    ],
-  },
 
   {
     id: "hall",
@@ -247,7 +234,7 @@ export default function CreateProject() {
       setLoadingProject(true);
 
       const response = await fetch(
-        `http://localhost:5000/api/project-specifications/${editId}`
+        `${API_URL}/api/project-specifications/${editId}`
       );
 
       const data = await response.json();
@@ -387,7 +374,7 @@ export default function CreateProject() {
   formData.append("image", file);
 
   const response = await fetch(
-    "http://localhost:5000/api/upload-project-image",
+    `${API_URL}/api/upload-project-image`,
     {
       method: "POST",
       body: formData,
@@ -460,8 +447,8 @@ const prepareProjectForSave = async () => {
   const projectToSave = await prepareProjectForSave();
 
   const url = editId
-    ? `http://localhost:5000/api/project-specifications/${editId}`
-    : "http://localhost:5000/api/project-specifications";
+    ? `${API_URL}/api/project-specifications/${editId}`
+    : `${API_URL}/api/project-specifications`;
 
   const method = editId ? "PUT" : "POST";
 
