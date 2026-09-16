@@ -7,22 +7,43 @@ import {
   updateProjectSpecification,
   deleteProjectSpecification,
 } from "../controllers/projectSpecificationController.js";
+import { protect, adminOnly } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// Create a new project specification
-router.post("/project-specifications", createProjectSpecification);
+router.post(
+  "/project-specifications",
+  protect,
+  adminOnly,
+  createProjectSpecification
+);
 
-// Get all project specifications
-router.get("/project-specifications", getProjectSpecifications);
+router.get(
+  "/project-specifications",
+  protect,
+  adminOnly,
+  getProjectSpecifications
+);
 
-// Get one project specification
-router.get("/project-specifications/:id", getProjectSpecification);
+router.get(
+  "/project-specifications/:id",
+  protect,
+  adminOnly,
+  getProjectSpecification
+);
 
-// Update a project specification
-router.put("/project-specifications/:id", updateProjectSpecification);
+router.put(
+  "/project-specifications/:id",
+  protect,
+  adminOnly,
+  updateProjectSpecification
+);
 
-// Delete a project specification
-router.delete("/project-specifications/:id", deleteProjectSpecification);
+router.delete(
+  "/project-specifications/:id",
+  protect,
+  adminOnly,
+  deleteProjectSpecification
+);
 
 export default router;

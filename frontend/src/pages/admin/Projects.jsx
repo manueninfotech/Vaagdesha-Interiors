@@ -25,8 +25,16 @@ export default function Projects() {
     try {
       setLoading(true);
 
+      const token = localStorage.getItem("vaagdesha_token");
+
       const response = await fetch(
-        `${API_URL}/api/project-specifications`
+        `${API_URL}/api/project-specifications`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       const data = await response.json();
@@ -72,10 +80,17 @@ export default function Projects() {
     try {
       setDeletingId(id);
 
+      const token = localStorage.getItem(
+        "vaagdesha_token"
+      );
+
       const response = await fetch(
         `${API_URL}/api/project-specifications/${id}`,
         {
           method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 

@@ -15,6 +15,7 @@ import AdminLayout from "./components/admin/AdminLayout";
 import CreateProject from "./pages/admin/CreateProject";
 import Projects from "./pages/admin/Projects";
 import ProjectView from "./pages/admin/ProjectView";
+import Login from "./pages/admin/Login";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -27,6 +28,8 @@ function AnimatedRoutes() {
         <Route path="/services" element={<Services />} />
         <Route path="/reviews" element={<Reviews />} />
         <Route path="/contact" element={<Contact />} />
+
+        <Route path="/admin/login" element={<Login />} />
 
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<CreateProject />} />

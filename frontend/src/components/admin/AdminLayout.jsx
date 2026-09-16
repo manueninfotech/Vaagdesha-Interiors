@@ -3,6 +3,8 @@ import {
   Outlet,
   NavLink,
   useLocation,
+  Navigate,
+  useNavigate,
 } from "react-router-dom";
 
 import {
@@ -10,13 +12,37 @@ import {
   FolderOpen,
   Menu,
   X,
+  LogOut,
 } from "lucide-react";
 
 export default function AdminLayout() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [mobileMenuOpen, setMobileMenuOpen] =
     useState(false);
+
+  const handleLogout = () => {
+  localStorage.removeItem("vaagdesha_token");
+  localStorage.removeItem("vaagdesha_user");
+
+  setMobileMenuOpen(false);
+
+  navigate("/admin/login", {
+    replace: true,
+  });
+};
+  const token = localStorage.getItem("vaagdesha_token");
+
+if (!token) {
+  return (
+    <Navigate
+      to="/admin/login"
+      replace
+      state={{ from: location }}
+    />
+  );
+}
 
   const navItems = [
     {
@@ -91,6 +117,16 @@ export default function AdminLayout() {
             );
           })}
         </nav>
+        <div className="absolute bottom-0 left-0 right-0 border-t border-[#E5D9CC] p-4">
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm text-[#6D5C4D] transition hover:bg-[#F5EFE6] hover:text-[#5A0F14]"
+          >
+            <LogOut size={18} />
+            <span>Logout</span>
+          </button>
+        </div>
       </aside>
 
 
@@ -214,18 +250,24 @@ export default function AdminLayout() {
 
         </nav>
 
-
         {/* MOBILE DRAWER FOOTER */}
 
-        <div className="absolute bottom-0 left-0 right-0 border-t border-[#E5D9CC] px-5 py-5">
-          <p className="text-[9px] uppercase tracking-[0.25em] text-[#A49588]">
-            Project Management
-          </p>
+        <div className="absolute bottom-0 left-0 right-0 border-t border-[#E5D9CC] px-5 py-4">
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm text-[#6D5C4D] transition hover:bg-[#F5EFE6] hover:text-[#5A0F14]"
+        >
+          <LogOut size={19} />
+          <span className="font-medium">
+            Logout
+          </span>
+        </button>
 
-          <p className="mt-1 font-serif text-sm text-[#5A0F14]">
-            Vaagdesha Interiors
-          </p>
-        </div>
+        <p className="mt-3 px-4 text-[9px] uppercase tracking-[0.2em] text-[#A49588]">
+          Vaagdesha Interiors
+        </p>
+      </div>
 
       </aside>
 

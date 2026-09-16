@@ -233,8 +233,20 @@ export default function CreateProject() {
     try {
       setLoadingProject(true);
 
+      const token = localStorage.getItem("vaagdesha_token");
+
+      if (!token) {
+        throw new Error("Authentication required.");
+      }
+
       const response = await fetch(
-        `${API_URL}/api/project-specifications/${editId}`
+        `${API_URL}/api/project-specifications/${editId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       const data = await response.json();
@@ -373,10 +385,19 @@ export default function CreateProject() {
 
   formData.append("image", file);
 
+  const token = localStorage.getItem("vaagdesha_token");
+
+  if (!token) {
+    throw new Error("Authentication required.");
+  }
+
   const response = await fetch(
     `${API_URL}/api/upload-project-image`,
     {
       method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
       body: formData,
     }
   );
@@ -452,13 +473,20 @@ const prepareProjectForSave = async () => {
 
   const method = editId ? "PUT" : "POST";
 
-  const response = await fetch(url, {
-    method,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(projectToSave),
-  });
+  const token = localStorage.getItem("vaagdesha_token");
+
+if (!token) {
+  throw new Error("Authentication required.");
+}
+
+const response = await fetch(url, {
+  method,
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  },
+  body: JSON.stringify(projectToSave),
+});
 
   const data = await response.json();
 

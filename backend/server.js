@@ -6,6 +6,7 @@ import cors from "cors";
 import contactRoutes from "./routes/contactRoutes.js";
 import projectSpecificationRoutes from "./routes/projectSpecificationRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ app.use(express.json());
    .then(() => console.log("✅ MongoDB Connected"))
    .catch((err) => console.log(err));
 
+app.use("/api", authRoutes);
 app.use("/api", contactRoutes);
 app.use("/api", projectSpecificationRoutes);
 app.use("/api", uploadRoutes);

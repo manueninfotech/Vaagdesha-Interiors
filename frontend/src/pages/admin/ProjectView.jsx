@@ -240,43 +240,56 @@ export default function ProjectView() {
   ======================================================= */
 
   useEffect(() => {
-    const fetchProject = async () => {
-      try {
-        setLoading(true);
+  const fetchProject = async () => {
+    try {
+      setLoading(true);
 
-        const response = await fetch(
-  `${API_URL}/api/project-specifications/${id}`
-);
+      const token = localStorage.getItem(
+        "vaagdesha_token"
+      );
 
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(
-            data.message ||
-              "Failed to fetch project"
-          );
-        }
-
-        setProject(data.project);
-      } catch (error) {
-        console.error(
-          "Fetch Project Error:",
-          error
-        );
-
-        alert(
-          error.message ||
-            "Something went wrong while loading the project."
-        );
-      } finally {
-        setLoading(false);
+      if (!token) {
+        throw new Error("Authentication required.");
       }
-    };
 
-    if (id) {
-      fetchProject();
+      const response = await fetch(
+        `${API_URL}/api/project-specifications/${id}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.message || "Failed to fetch project"
+        );
+      }
+
+      setProject(data.project);
+    } catch (error) {
+      console.error(
+        "Fetch Project Error:",
+        error
+      );
+
+      alert(
+        error.message ||
+          "Failed to fetch project"
+      );
+    } finally {
+      setLoading(false);
     }
-  }, [id]);
+  };
+
+  if (id) {
+    fetchProject();
+  }
+}, [id]);
 
 
   /* =======================================================
