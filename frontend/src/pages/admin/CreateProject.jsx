@@ -455,9 +455,14 @@ const prepareProjectForSave = async () => {
   }
 
   return {
-    ...project,
-    sections: updatedSections,
-  };
+  projectId: project.projectId || "",
+  projectName: project.projectName,
+  clientName: project.clientName,
+  location: project.location,
+  projectType: project.projectType,
+  date: project.date,
+  sections: updatedSections,
+};
 };
 
   const saveProject = async () => {
@@ -467,11 +472,13 @@ const prepareProjectForSave = async () => {
 
   const projectToSave = await prepareProjectForSave();
 
-  const url = editId
-    ? `${API_URL}/api/project-specifications/${editId}`
+  const existingProjectId = editId || project._id;
+
+  const url = existingProjectId
+    ? `${API_URL}/api/project-specifications/${existingProjectId}`
     : `${API_URL}/api/project-specifications`;
 
-  const method = editId ? "PUT" : "POST";
+  const method = existingProjectId ? "PUT" : "POST";
 
   const token = localStorage.getItem("vaagdesha_token");
 

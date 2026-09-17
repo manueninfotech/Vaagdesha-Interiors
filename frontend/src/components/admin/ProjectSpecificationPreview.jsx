@@ -644,44 +644,83 @@ export default function ProjectSpecificationPreview({
       let currentHeight = 0;
 
 
-      measuredBlocks.forEach(
-        ({ id, height }) => {
-          const block =
-            contentBlocks.find(
-              (item) =>
-                item.id === id
-            );
+      measuredBlocks.forEach(({ id, height }, index) => {
+  const block = contentBlocks.find(
+    (item) => item.id === id
+  );
 
-          if (!block) {
-            return;
-          }
+  if (!block) {
+    return;
+  }
 
+  /*
+   * -------------------------------------------------------
+   * SECTION HEADER PAGINATION
+   *
+   * Never leave a section heading alone at the bottom
+   * of a page.
+   *
+   * If the current page has some content and there isn't
+   * enough room for:
+   *
+   *     SECTION HEADER
+   *     +
+   *     FIRST CONTENT BLOCK
+   *
+   * move the entire section heading to the next page.
+   * -------------------------------------------------------
+   */
 
-          /*
-           * If this block doesn't fit:
-           *
-           * Move ONLY this block to the
-           * next page.
-           */
+  if (block.type === "header") {
+    const nextMeasuredBlock = measuredBlocks[index + 1];
 
-          if (
-            currentPage.length > 0 &&
-            currentHeight + height >
-              availableHeight
-          ) {
-            generatedPages.push(
-              currentPage
-            );
+    const nextBlockHeight = nextMeasuredBlock
+      ? nextMeasuredBlock.height
+      : 0;
 
-            currentPage = [];
-            currentHeight = 0;
-          }
+    const requiredSectionStartHeight =
+      height + nextBlockHeight;
 
+    if (
+      currentPage.length > 0 &&
+      currentHeight + requiredSectionStartHeight >
+        availableHeight
+    ) {
+      generatedPages.push(currentPage);
 
-          currentPage.push(block);
-          currentHeight += height;
-        }
-      );
+      currentPage = [];
+      currentHeight = 0;
+    }
+
+    currentPage.push(block);
+    currentHeight += height;
+
+    return;
+  }
+
+  /*
+   * -------------------------------------------------------
+   * NORMAL BLOCK PAGINATION
+   *
+   * For descriptions, fields and images:
+   * move only the block that doesn't fit.
+   * -------------------------------------------------------
+   */
+
+  if (
+    currentPage.length > 0 &&
+    currentHeight + height >
+      availableHeight
+  ) {
+    generatedPages.push(currentPage);
+
+    currentPage = [];
+    currentHeight = 0;
+  }
+
+  currentPage.push(block);
+  currentHeight += height;
+});
 
 
       if (currentPage.length > 0) {

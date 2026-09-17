@@ -29,12 +29,18 @@ export const createProjectSpecification = async (req, res) => {
 
     const projectId = `VGI-${year}-${projectNumber}`;
 
-    const projectData = {
-      ...req.body,
+    const {
+  _id,
+  createdAt,
+  updatedAt,
+  __v,
+  ...cleanProjectData
+} = req.body;
 
-      // Backend-generated Project ID
-      projectId,
-    };
+const projectData = {
+  ...cleanProjectData,
+  projectId,
+};
 
     const project = await ProjectSpecification.create(projectData);
 
